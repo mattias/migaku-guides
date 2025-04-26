@@ -52,6 +52,9 @@ You get there by using the cd command:
 cd ~/repos/Yujin
 ```
 
+Note that webm doesns't seem to work with Yujin, so if a video gets downloaded as webm you have to convert it to mp4 using ffmpeg:
+https://gist.github.com/maximebories/91d79c0ec25fd3f990615dcf355de8eb
+
 ## Installing subs2cia
 After having installed Yujin most of the stuff is already in place, so just run the following command.
 ```
