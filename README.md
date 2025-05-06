@@ -1,4 +1,3 @@
-# Condensed Audio + Generating subtitles
 This guide will go through, step by step, how to install Yujin and subs2cia from scratch on a Windows 11 machine.
 
 ## Prequisites
@@ -110,7 +109,43 @@ rm ~/repos/Yujin/conversation-with-noriko-sensei*
 For this particular example video above, there isn't much time saved by condensing because they pretty much talk nonstop.
 
 ## SubPlz
-WIP
+
+To use SubPlz they recommend running it in docker, so first we need to install docker.
+See instructions here: https://docs.docker.com/desktop/setup/install/windows-install/
+
+Pick the Microsoft store one and use Docker Desktop with WSL.
+
+After the installation is done, start it up have it run in the background.
+
+Now, the only thing you have to do to use SubPlz is to run this command:
+
+```
+docker run -it --rm --name subplz \
+--gpus all \
+-v /mnt/d/sync/Ghost_Hunt_1/:/sync \
+-v /mnt/d/SyncCache:/app/SyncCache \
+-v /mnt/d/ModelCache:/config/.cache \
+kanjieater/subplz:latest \
+gen -d "/sync/" --model large-v3
+```
+
+Here is the breakdown of the command and what you have to change:
+
+`-v /mnt/d/sync/Ghost_Hunt_1/:/sync`
+The /mnt/d/sync/Ghost_Hunt_1/ is the path to the folder on your harddrive with the audiobook or video files. It is equivalent to D:\sync\Ghost_Hunt_1\
+So you have to create these folders and use the drive letter you have. Rename them as suited.
+The "/sync" part at the end is where the above folder should connect to in docker, which would be the /sync/ folder there.
+
+`-v /mnt/d/SyncCache:/app/SyncCache`
+This is to connect a local folder to the docker folder for the sync cache stuff. Because after this "run once" command stops, everything in the virtual machine will be removed like it was never there. So with this it can save the files locally instead of directly in the virtual machine.
+
+`-v /mnt/d/ModelCache:/config/.cache`
+Same here, but for the whisper model and other related caches.
+
+`gen -d "/sync/" --model large-v3`
+This is the final part of the command and this will generate subtitles for the contents in /sync/, which we "mounted" earlier using `-v /mnt/d/sync/Ghost_Hunt_1/:/sync`. It's basically a shortcut to `/mnt/d/sync/Ghost_Hunt_1/`. I hope that explains it easily enough.
+
+There are other commands apart from `gen`. All available commands can be found through the link below in the README file.
 
 *  [kanjieater/SubPlz](https://github.com/kanjieater/SubPlz)
 
